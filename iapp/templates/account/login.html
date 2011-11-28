@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% from "macros/_forms.html" import render_errors %}
+{% block title %}登录{% endblock %}
+
+{% block main %}
+
+<h2>登陆42ic.com</h2>
+{{ render_errors(form.login) }}
+{{ render_errors(form.password) }}
+<div class="page-short-body">
+<div class="reg_left">
+<label>邮箱/用户名</label>
+<label>密码</label>
+</div>
+<div class="reg_right">
+<form action="{{ url_for('account.login') }}" method=post>
+{{ form.hidden_tag() }}
+<div>
+<input type="text" value="" class="" name="login" id="lonin" tabindex="1">
+ </div>
+<div>
+<input id="password" name="password" type="password" class="" tabindex="2" maxlength="20">
+</div>
+<div class="gray-text">
+如果是在自己的电脑上访问,可以选择"记住我",不要每次都登陆.
+</div>
+<div style="font-size:12px;color:#666;margin-top:10px;">
+<input type="checkbox" style="display:inline;vertical-align:-2px;width:auto;height:auto;line-height:auto;" id="remember" name="remember" checked="true">
+<label for="remember">
+记住我
+</label>
+ </div>
+<div style="margin-top:28px">
+<div class="btnw">{{ form.submit(class="button")}}</div>
+</div>
+</form>
+</div>
+</div>
+
+<p class="phl32">
+<a href="{{ url_for('account.signup', next=form.next.data) }}">创建帐号</a>
+</p>
+<p class="phl32">
+<a href="{{ url_for('account.forgot_password') }}">找回密码</a>
+</p>
+<div class="clear"></div>
+{% endblock %}

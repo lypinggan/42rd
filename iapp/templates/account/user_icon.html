@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% from "macros/_forms.html" import render_errors %}
+{% block title %}添加或更改你的头像{% endblock %}
+{% block stylesheets  %} 
+<link href="{{ url_for('.static', filename='imgareaselect/imgareaselect-default.css') }}" rel="stylesheet" type="text/css">
+
+{% endblock %}
+{% block extra_javascripts %}
+<script type="text/javascript" src="{{ url_for('.static', filename='js/imgareaselect.pack.js') }}"></script>
+
+{% endblock %}
+{% block main %} 
+<div class="account_nav">
+<a href="{{ url_for("account.profile") }}">资料</a>
+<a href="{{ url_for("account.namecard") }}">名片</a>
+<a href="{{ url_for("account.change_password") }}">密码</a>
+<a class="now" href="{{ url_for("account.user_icon") }}">头像</a>
+</div> 
+<div class="grid-16-8 clearfix">
+<table align="center">
+<form name="form" method="post" action="{{ url_for("account.user_icon_up_file") }}" enctype="multipart/form-data">
+    <tbody><tr><td>
+    1、从电脑中选择你喜欢的照片:<br>
+    <span class="pl">你可以上传JPG、JPEG、GIF、PNG或BMP文件。</span><br>
+    <input type="file" name="picfile" style="width:300px"><br><br>
+    <input name="icon_cancel" id="icon_cancel" type="submit" value="上传照片" class="button">
+     <br><br>
+</form>
+<p></p>
+    <p class="ul"></p>
+    2、编辑您上传的照片：<br>
+    <p>随意拖拽或缩放大图中的虚线方格，预览的小图即为保存后的头像图标。</p>
+    <img src="{{ url_for('.static', filename= icon_image_url) }}" style="" id="bigimg">
+    <p>预览：</p>
+    <div style="float:left;overflow:hidden;width:48px;height:48px;border:1px solid #f0f0f0">
+    <img src="{{ url_for('.static', filename= icon_image_url) }}" id="preimg" style=""></div>
+    <div style="display:none;"></div>
+    <form name="form" method="post" enctype="multipart/form-data">
+    <input type="hidden" id="imgpos" name="imgpos" value="{{icon_x}}_{{icon_y}}_{{icon_h}}">
+    </td></tr>
+    <tr><td colspan="2" style="padding-top:20px;">
+    <input name="icon_cancel" id="icon_cancel" type="submit" value="确认编辑" class="button">
+    </form>
+    </td></tr>
+    </tbody></table>
+</div>
+<script type="text/javascript">
+var imgw,imgh;
+function preview(img, selection) { 
+    var scaleX = 48 / selection.width; 
+    var scaleY = 48 / selection.height; 
+    $('#preimg').css({ 
+        width: Math.round(scaleX * imgw) + 'px', 
+        height: Math.round(scaleY * imgh) + 'px', 
+        marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
+        marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
+    });
+    if($('#imgpos')) $('#imgpos').attr('value',selection.x1+'_'+selection.y1+'_'+(selection.x2-selection.x1)).attr('name', 'imgpos')
+}
+$(window).load(function(){ 
+    if($('#imgpos').length){
+
+        imgw = $('#bigimg').width();
+        imgh = $('#bigimg').height();
+        var _ = $('#imgpos').attr('value').split('_');
+        var pos = (_[2] != '0')?  { 
+            x1: parseInt(_[0]), 
+            y1: parseInt(_[1]), 
+            x2: parseInt(_[0])+parseInt(_[2]), 
+            y2: parseInt(_[1])+parseInt(_[2]) 
+        } : {
+            x1: imgw>imgh?(imgw-imgh)/2+3:3, 
+            x2: imgw>imgh?(imgw+imgh)/2-3:imgw-3, 
+            y1: imgw>imgh?3:(imgh-imgw)/2+3, 
+            y2: imgw>imgh?imgh-3:(imgh+imgw)/2-3 
+        };
+        $('#bigimg').imgAreaSelect($.extend(pos,{
+            aspectRatio : '1:1' ,
+            onSelectChange : preview,
+            onSelectBegin : preview,
+            noNewSelect : 'true'
+        }));
+    }
+})
+</script> 
+{% endblock %}

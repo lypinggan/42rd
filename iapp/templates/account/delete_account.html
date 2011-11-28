@@ -1,0 +1,15 @@
+﻿{% extends "base.html" %}
+{% from "macros/_forms.html" import render_errors %}
+{% block title %}注销帐号{% endblock %}
+{% block main %}
+<h2>删除我的帐号</h2>
+<br/>
+<p>
+您确定删除这个帐号的所有信息吗？删除后将无法恢复<a href="{{ url_for('frontend.index') }}">这里</a>取消.
+</p><br/>
+<form method="POST" action=".">
+    {{ form.hidden_tag() }}
+<div class="btnw">{{ form.submit(class="button")}}</div>
+</form>
+
+{% endblock %}

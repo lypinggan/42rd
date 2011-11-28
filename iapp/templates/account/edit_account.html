@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% from "macros/_forms.html" import render_errors %}
+{% block title %}个人资料{% endblock %}
+{% block main %}
+<p>
+
+</p>
+<div class="account_nav">
+<a class="now" href="{{ url_for("account.profile") }}">资料</a>
+<a href="{{ url_for("account.namecard") }}">名片</a>
+<a href="{{ url_for("account.change_password") }}">密码</a>
+<a href="{{ url_for("account.user_icon") }}">头像</a>
+</div>
+<form method="POST" action=".">
+    {{ form.hidden_tag() }}
+<table style="clear:both;margin-top:20px;" width="100%" align="center">
+    <tbody>
+    <tr style="margin-top:8px;">
+        <td valign="top" align="right" class="green">用户名</td>
+        <td valign="top">
+                {{ g.user.username }}
+        </td>
+    </tr>
+
+    <tr style="margin-top:8px;"><td valign="top" align="right"class="green">头　像</td>
+    
+    <td valign="top">
+        <div style="margin:10px;float:left"><img src="{{ url_for('.static', filename= "avatar/"+g.user.avatar) }}"><br>头像图标</div>
+         <a href="{{ url_for("account.user_icon") }}" style="margin:10px;float:left">更新</a><p></p>
+     <br><br></td></tr>
+
+    <tr style="margin-top:8px;">
+        <td align="right"class="green">邮箱地址</td>
+        <td valign="top">
+            {{ form.email }}
+        </td>
+    </tr>
+    <tr style="margin-top:8px;">
+        <td align="right"class="green">一句话概况我</td>
+        <td valign="top">
+            {{ form.tagline(maxLength=28) }}
+        </td>
+    </tr>
+    <tr style="margin-top:8px;">
+        <td align="right"class="green">个人简介</td>
+        <td valign="top">
+            {{ form.description }}
+        </td>
+    </tr>
+    <tr style="margin-top:8px;">
+        <td align="right"class="green">注册时间</td>
+        <td valign="top">
+            <p>{{ g.user.date_joined }}</p>
+        </td>
+    </tr>
+
+    <tr style="margin-top:8px;">
+        <td></td>
+        <td><div class="btnw">{{ form.submit(class="button")}}</div></td>
+    </tr>
+
+    </tbody></table>
+</form>
+{% endblock %}

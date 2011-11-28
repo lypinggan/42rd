@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "macros/_forms.html" import render_errors %}
+{% block title %}加入我们{% endblock %}
+{% set selected_tab="signup" %}
+
+{% block main %}
+
+<h2>加入42ic.com</h2>
+{{ render_errors(form.email) }}
+{{ render_errors(form.password) }}
+{{ render_errors(form.password_again) }}
+{{ render_errors(form.username) }}
+<div class="page-short-body">
+<div class="reg_left">
+<label>邮箱</label>
+<label>密码</label>
+<label>确认密码</label>
+<label>用户名</label>
+</div>
+<div class="reg_right">
+<form action="{{ url_for('account.signup') }}" method=post>
+{{ form.hidden_tag() }}
+<div>
+<input type="text" value="" class="" name="email" id="email" tabindex="1">
+ </div>
+<div>
+<input id="password" name="password" type="password" class="" tabindex="2" maxlength="20">
+</div>
+<div>
+ <input id="password_again" name="password_again" type="password" class="" tabindex="3" maxlength="20">
+</div>
+<div>
+<input id="username" style="width:155px" name="username" type="text" class="" tabindex="4" maxlength="20">
+ </div>
+<div class="gray-text">
+只能使用字母，数字或破折号(最好是您的英文名字，因为它会用到您的个人主页的地址中)
+</div>
+<div style="font-size:12px;color:#666;margin-top:10px;">
+<input type="checkbox" style="display:inline;vertical-align:-2px;width:auto;height:auto;line-height:auto;" id="agree" name="agree" checked="true">
+<label for="agree">
+我已经认真阅读并同意42ic的
+<a href="/regagreement/">
+《使用协议》
+</a>
+</label>
+ </div>
+<div style="margin-top:28px">
+<div class="btnw">{{ form.submit(class="button")}}</div>
+</div>
+</form>
+</div>
+</div>
+<p class="phl32">
+<a href="{{ url_for('account.login', next=form.next.data) }}">现在登陆</a>
+</p>
+<p class="phl32">
+<a href="{{ url_for('account.forgot_password') }}">找回密码</a>
+</p>
+<div class="clear"></div>
+{% endblock %}
